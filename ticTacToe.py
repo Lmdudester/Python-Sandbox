@@ -68,7 +68,7 @@ def takeTurn(gmBrd, player):
             continue
 
         if gameBoard[num][lett] != '~':
-            print "Location already taken..."
+            print "\nLocation already taken..."
             printBoard(gameBoard)
             continue
 
@@ -86,7 +86,7 @@ result = '~'
 #Run Game
 while True:
     #Set up game
-    gameBoard = copy.copy(blankBoard)
+    gameBoard = copy.deepcopy(blankBoard)
     printBoard(gameBoard)
     lett, num = 0, 0
     result = detWinner(gameBoard)
