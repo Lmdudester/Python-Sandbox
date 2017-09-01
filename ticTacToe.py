@@ -1,17 +1,17 @@
 import copy
 
-blankBoard = [['~', '~', '~'], ['~', '~', '~'], ['~', '~', '~']]
+blankBoard = [['~', '~', '~'], ['~', '~', '~'], ['~', '~', '~'], 0]
 letterDict = {'A':0, 'B':1, 'C':2}
 
 def printBoard(gmBrd):
-    print "\n  A  B  C"
+    print ("\n  A B C")
 
     num = 1
-    for i in gameBoard:
-        print str(num),
+    for i in gameBoard[:-1]:
+        print (str(num) + " ", end='')
         for j in i:
-            print j + " ",
-        print ""
+            print (j + " ", end='')
+        print ("")
         num += 1
 
 def detWinner(gmBrd):
@@ -43,32 +43,40 @@ def detWinner(gmBrd):
     return '~'
 
 def takeTurn(gmBrd, player):
+    if gmBrd[3] == 9:
+        return 0
+    else:
+        gmBrd[3] += 1
+
     while True:
-        print "\n" + player + "'s Turn: "
+        print ("\n" + player + "'s Turn: ")
         try:
-            lett = raw_input("Enter the letter coordinate: ")
-            if lett in letterDict:
-                lett = letterDict[lett]
+            inp = input("Enter the coordinates: [Format: letter,number] ")
+            print(inp)
+
+            #Get Letter
+            if inp[0] in letterDict:
+                lett = letterDict[inp[0]]
             else:
-                print "Bad letter coordinate, try again..."
+                print ("Bad letter coordinate, try again...")
                 continue
 
-            num = int(raw_input("Enter the number coordinate: "))
-            if num >= 1 and num <= 3:
-                num = num - 1
+            #Get Number
+            if int(inp[2]) > 0 and int(inp[2]) < 4:
+                num = int(inp[2]) - 1
             else:
-                print "Bad number coordinate, try again..."
+                print ("Bad letter coordinate, try again...")
                 continue
 
         except KeyboardInterrupt:
             exit()
 
         except:
-            print "Invalid Input, try again..."
+            print ("Invalid Input, try again...")
             continue
 
         if gameBoard[num][lett] != '~':
-            print "\nLocation already taken..."
+            print ("\nLocation already taken...")
             printBoard(gameBoard)
             continue
 
@@ -77,8 +85,8 @@ def takeTurn(gmBrd, player):
         break
 
 #Set up Program
-print "\n\tWelcome to TicTacToe!\n"
-print "Enter Ctrl+C to exit at any time.\n"
+print ("\n\tWelcome to TicTacToe!\n")
+print ("Enter Ctrl+C to exit at any time.\n")
 gameBoard = []
 lett, num = 0, 0
 result = '~'
@@ -92,28 +100,35 @@ while True:
     result = detWinner(gameBoard)
 
     #Take Turns
-    while result == '~':
+    while True:
         #X's Turn
-        takeTurn(gameBoard, 'X')
+        if takeTurn(gameBoard, 'X') == 0:
+            break
         result = detWinner(gameBoard)
 
         if result != '~':
-            break;
+            break
 
         #O's Turn
         takeTurn(gameBoard, 'O')
         result = detWinner(gameBoard)
 
-    print "\nWinner: %s\n" % result
+        if result != '~':
+            break
+
+    if result != '~':
+        print ("\nWinner: %s!\n" % result)
+    else:
+        print ("\nTie!\n")
 
     #Play another game?
     while True:
         try:
-            yOrN = raw_input("Play another game? (Y/N): ")
+            yOrN = input("Play another game? (Y/N): ")
         except KeyboardInterrupt:
             exit()
         except:
-            print "Invalid Input, try again..."
+            print ("Invalid Input, try again...")
             continue
 
         if yOrN == 'Y':
@@ -121,4 +136,4 @@ while True:
         if yOrN == 'N':
             exit()
 
-        print "Invalid Input, try again..."
+        print ("Invalid Input, try again...")
