@@ -1,4 +1,5 @@
 import os
+import sys
 
 #Creates a new account under a given service
 def addAccount(fullpath):
@@ -65,7 +66,7 @@ def accessAcct(path):
 infoDict = {"email":"", "username":"", "password":""}
 
 #Preset Path
-incompletePath = os.path.abspath(".\Passwords")
+incompletePath = os.path.abspath(sys.argv[1])
 
 #Determine Service and Account
 path = getService(incompletePath)
