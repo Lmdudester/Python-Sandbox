@@ -79,12 +79,27 @@ class CardPlayer:
 
     # ~~~String Methods~~~ #
 
+    # **handString()**
+    # Returns a string representing the player's hand
+    # Args:
+    #   N/A
+    # Return:
+    #   A string of the format -->
+    #       "<card>\n<card>\n<card>\n..."
+    def handString(self):
+        if(len(self.hand) == 0):
+            return "Empty"
+        ret = self.hand[0].toString()
+        for i in self.hand[1:]:
+            ret = ret + "\n" + i.toString()
+        return ret
+
     # **toString()**
     # Returns a string representing the player's data
     # Args:
     #   N/A
     # Return:
-    #   A string of the format --> 
+    #   A string of the format -->
     #       "Name: <name>\nBank: <bank>\nHand: \n<card>\n<card>..."
     def toString(self):
         ret = "Name: " + self.name + "\nBank: $" + str(self.bank) + "\nHand:"
