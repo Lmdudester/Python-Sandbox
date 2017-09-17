@@ -32,6 +32,8 @@ class Card:
             raise ValueError("Invalid Face Number: %i", face)
         self.face = face #2-14
 
+    # ~~~String Methods~~~ #
+
     # **getFaceString()**
     # Returns a string representing the face value of the card
     # Args:

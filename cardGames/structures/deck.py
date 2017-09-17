@@ -39,6 +39,8 @@ class Deck:
             self.deckList[x] = self.deckList[num]
             self.deckList[num] = temp
 
+    # ~~~Dealing Methods~~~ #
+
     # **peekCard()**
     # Gets a card object at a given index in the reamining deck without
     #   altering the top card of the deck
@@ -52,18 +54,20 @@ class Deck:
         else:
             return self.deckList[self.index + subIndex]
 
-    # **getTopCard()**
+    # **dealCard()**
     # Gets the "top" card object of the deck and edits the deck to
     #   reflect that
     # Args:
     #   N/A
     # Return:
     #   The "top" card object of the deck or None if the deck is empty
-    def getTopCard(self):
+    def dealCard(self):
         if(self.index == 52):
             return None
         self.index = self.index + 1
         return self.deckList[self.index - 1]
+
+    # ~~~Object Data Methods~~~ #
 
     # **size()**
     # Gets the number of cards remaining in the deck
@@ -73,6 +77,8 @@ class Deck:
     #   The number of cards remaining in the deck
     def size(self):
         return 52 - self.index
+
+    # ~~~String Methods~~~ #
 
     # **toString()**
     # Gets a string representing the whole deck
