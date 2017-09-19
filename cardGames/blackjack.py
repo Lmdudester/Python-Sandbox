@@ -147,6 +147,11 @@ def main():
             for n in pArr:
                 n.giveCard(deck.dealCard())
 
+        print("\nDealer's Board:")
+
+        print("%s" % pArr[0].hand[1].toString())
+        print("\nCurrent Maximum Point Evaulation: %d\n" % getHandValue(pArr[0].hand[1:]))
+
         #Take Turns
         for i in range(1,numPlayers + 1):
             betArr[i] = takeTurn(pArr[i], deck, betArr[i])
@@ -155,7 +160,7 @@ def main():
         while(getHandValue(pArr[0].hand) < 17):
             pArr[0].giveCard(deck.dealCard())
 
-            print("\nDealer's Turn:")
+        print("\nDealer's Turn:")
 
         print("\n%s" % pArr[0].handString())
         print("\nCurrent Maximum Point Evaulation: %d\n" % getHandValue(pArr[0].hand))
