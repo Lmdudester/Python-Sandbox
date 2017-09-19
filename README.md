@@ -13,7 +13,7 @@
 * Allows access to properly formatted data in each of the files.
 * Designed to make the addition of a kind of encryption step simple.
 
-### 2. BlackJack - *cardGames/blackjack.py*
+### 3. BlackJack - *cardGames/blackjack.py*
 * Allows for up to 4 players to play blackjack against a computer dealer.
 * Imlements card, deck and player libraries.
 * Automatically edits prompts based on individual player status.
