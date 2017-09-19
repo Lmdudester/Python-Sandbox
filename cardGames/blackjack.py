@@ -63,7 +63,7 @@ def takeTurn(player, deck, bet):
         options.append('d')
         promptStr = promptStr + "D - Double Down, "
     else:
-        print("\nInsufficient funds to double down.\n")
+        print("Insufficient funds to double down.\n")
 
     promptStr = promptStr + "S - Stand) "
 
@@ -79,6 +79,10 @@ def takeTurn(player, deck, bet):
         if(getHandValue(player.hand) > 21):
             print("%s Busted!" % player.name)
             return -1*bet
+
+        if(getHandValue(player.hand) == 21):
+            print("\n%s HAS BLACKJACK!\n" % player.name.upper())
+            return bet
 
         action = getResp(promptStr, "That is not an available option.", options)
 
@@ -102,7 +106,6 @@ def takeTurn(player, deck, bet):
 
     return bet
 
-
 def main():
     print("Welcome to BlackJack! (Use CTRL+C to end at any time)")
 
@@ -119,66 +122,77 @@ def main():
 
     #Create Deck
     deck = Deck()
+    roundNum = 1
 
-    #Place Bets
-    betArr = [0, 0, 0, 0, 0]
-    print("")
-    for i in range(1,numPlayers + 1):
-        betArr[i] = getNumber("%s Please Make a Bet: (2-%d)" % (pArr[i].name, pArr[i].bank),
-                                "Invalid Bet.", 2, pArr[i].bank)
-        pArr[i].bank = pArr[i].bank - betArr[i]
+    while True:
+        print("Round #%d:" % roundNum)
 
-    print("\nDealing players in...")
+        #Place Bets
+        betArr = [0, 0, 0, 0, 0]
+        print("")
+        for i in range(1,numPlayers + 1):
+            betArr[i] = getNumber("%s Please Make a Bet: (2-%d) " % (pArr[i].name, pArr[i].bank),
+                                    "Invalid Bet.", 2, pArr[i].bank)
+            pArr[i].bank = pArr[i].bank - betArr[i]
 
-    #Reset
-    deck.shuffle()
-    for i in pArr:
-        i.discardHand()
+        print("\nDealing players in...")
 
-    #Deal Deck
-    for i in range(0,2):
-        for n in pArr:
-            n.giveCard(deck.dealCard())
+        #Reset
+        deck.shuffle()
+        for i in pArr:
+            i.discardHand()
 
-    #Take Turns
-    for i in range(1,numPlayers + 1):
-        betArr[i] = takeTurn(pArr[i], deck, betArr[i])
+        #Deal Deck
+        for i in range(0,2):
+            for n in pArr:
+                n.giveCard(deck.dealCard())
 
-    #Dealer's Turn
-    while(getHandValue(pArr[0].hand) < 17):
-        pArr[0].giveCard(deck.dealCard())
+        #Take Turns
+        for i in range(1,numPlayers + 1):
+            betArr[i] = takeTurn(pArr[i], deck, betArr[i])
 
-    print("\nDealer's Turn:")
+        #Dealer's Turn
+        while(getHandValue(pArr[0].hand) < 17):
+            pArr[0].giveCard(deck.dealCard())
 
-    print("\n%s" % pArr[0].handString())
-    print("\nCurrent Maximum Point Evaulation: %d\n" % getHandValue(pArr[0].hand))
+            print("\nDealer's Turn:")
 
-    if(getHandValue(pArr[0].hand) > 21):
-        print("Dealer Busted!")
-        betArr[0] = -1
+        print("\n%s" % pArr[0].handString())
+        print("\nCurrent Maximum Point Evaulation: %d\n" % getHandValue(pArr[0].hand))
 
-
-    #Payout
-    for i in range(1,numPlayers + 1):
-        if(betArr[0] == -1 and betArr[i] > 0):
-            print("%s wins $%d" % (pArr[i].name, betArr[i]))
-            pArr[i].bank = pArr[i].bank + betArr[i]*2
-        elif(getHandValue(pArr[0].hand) < getHandValue(pArr[i].hand) and betArr[i] > 0):
-            print("%s wins $%d" % (pArr[i].name, betArr[i]))
-            pArr[i].bank = pArr[i].bank + betArr[i]*2
-        elif(getHandValue(pArr[i].hand) == getHandValue(pArr[0].hand) and betArr[i] > 0):
-            print("%s breaks even." % pArr[i].name)
-            pArr[i].bank = pArr[i].bank + betArr[i]
-        elif(betArr[i] < 0):
-            print("%s loses $%d" % (pArr[i].name, -1*betArr[i]))
-        else:
-            print("%s loses $%d" % (pArr[i].name, betArr[i]))
-
-    print("")
-    for i in pArr:
-        print(i.toString() + "\n")
+        if(getHandValue(pArr[0].hand) > 21):
+            print("Dealer Busted!\n")
+            betArr[0] = -1
 
 
+        #Payout
+        for i in range(1,numPlayers + 1):
+            if(betArr[0] == -1 and betArr[i] > 0):
+                print("%s wins $%d" % (pArr[i].name, betArr[i]))
+                pArr[i].bank = pArr[i].bank + betArr[i]*2
+            elif(getHandValue(pArr[0].hand) < getHandValue(pArr[i].hand) and betArr[i] > 0):
+                print("%s wins $%d" % (pArr[i].name, betArr[i]))
+                pArr[i].bank = pArr[i].bank + betArr[i]*2
+            elif(getHandValue(pArr[i].hand) == getHandValue(pArr[0].hand) and betArr[i] > 0):
+                print("%s breaks even." % pArr[i].name)
+                pArr[i].bank = pArr[i].bank + betArr[i]
+            elif(betArr[i] < 0):
+                print("%s loses $%d" % (pArr[i].name, -1*betArr[i]))
+            else:
+                print("%s loses $%d" % (pArr[i].name, betArr[i]))
+
+        for i in reversed(range(1,numPlayers + 1)):
+            if pArr[i].bank == 0:
+                print("%s is broke! They are removed from the table." % pArr[i].name)
+                del pArr[i]
+                numPlayers -= 1
+
+        if numPlayers == 0:
+            print("No players are left at the table! Game Over!")
+            break
+
+        print("")
+        roundNum = roundNum + 1
 
 if __name__ == "__main__":
     main()
