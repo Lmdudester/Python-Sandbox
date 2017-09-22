@@ -19,5 +19,5 @@
 * Automatically edits prompts based on individual player status.
 * Removes broke players from game without stopping the game.
 
-### 3. Connect4 - *connect4.py*
+### 4. Connect4 - *connect4.py*
 * IN PROGRESS
