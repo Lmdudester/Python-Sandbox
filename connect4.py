@@ -13,7 +13,7 @@ class Board:
             if self.board[i][column] == 0:
                 self.board[i][column] = player
                 return player
-            return 0
+        return 0
 
     def __str__(self):
         ret = "+ - + - + - + - + - + - + - +\n"
@@ -29,6 +29,13 @@ def main():
     print(board)
 
     board.dropDisk(1,0)
+    board.dropDisk(1,0)
+    board.dropDisk(1,0)
+    board.dropDisk(1,0)
+    board.dropDisk(1,0)
+    board.dropDisk(1,0)
+    if(board.dropDisk(1,0) == 0):
+        print("Error")
 
     print(board)
 
