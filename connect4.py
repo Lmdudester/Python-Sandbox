@@ -8,12 +8,12 @@ class Board:
                         [0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0]   ]
 
-    def dropDisk(board, player, column):
-        for i in reverse(range(0,8)):
-            if self.board[column][i] == 0:
-                self.board[column][i] = player
-                return board
-            return None
+    def dropDisk(self, player, column):
+        for i in reversed(range(0,6)):
+            if self.board[i][column] == 0:
+                self.board[i][column] = player
+                return player
+            return 0
 
     def __str__(self):
         ret = "+ - + - + - + - + - + - + - +\n"
@@ -28,6 +28,9 @@ def main():
     board = Board()
     print(board)
 
+    board.dropDisk(1,0)
+
+    print(board)
 
 if __name__ == "__main__":
     main()
