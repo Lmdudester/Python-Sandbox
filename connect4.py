@@ -8,9 +8,13 @@ class Board:
                         [0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0]   ]
 
+        self.cols = ['0', '1', '2', '3', '4', '5', '6']
+
     def dropDisk(self, player, column):
         for i in reversed(range(0,6)):
             if self.board[i][column] == 0:
+                if(i == 0):
+                    self.cols.remove(str(column))
                 self.board[i][column] = player
                 return player
         return 0
@@ -70,7 +74,8 @@ class Board:
 
 
     def __str__(self):
-        ret = "+ - + - + - + - + - + - + - +\n"
+        ret =  "  0   1   2   3   4   5   6  \n"
+        ret += "+ - + - + - + - + - + - + - +\n"
         for i in self.board:
             ret += "|"
             for j in i:
@@ -78,24 +83,43 @@ class Board:
             ret += "\n+ - + - + - + - + - + - + - +\n"
         return ret
 
+def getResp(prompt, failStr, answerList):
+    resp = input(prompt).lower()
+
+    while True:
+        if(resp in answerList):
+            return resp
+        print(failStr)
+        resp = input(prompt).lower()
+
+def takeTurn(board, player):
+    print("Player %d's Turn" % player)
+    col = getResp("Where do you want to drop your disk? ",
+                "Column full or invalid number.", board.cols)
+
+    board.dropDisk(player, int(col))
+    print(board)
+
+    return board.playerWon(player)
+
 def main():
-    board = Board()
-    print(board)
+    resp = 'y'
+    while resp == 'y':
+        gameBoard = Board()
+        print("\n" + gameBoard.__str__())
 
-    board.dropDisk(1,1)
-    board.dropDisk(1,1)
-    board.dropDisk(1,1)
-    board.dropDisk(2,1)
-    board.dropDisk(1,2)
-    board.dropDisk(1,2)
-    board.dropDisk(2,2)
-    board.dropDisk(1,3)
-    board.dropDisk(2,3)
-    board.dropDisk(2,4)
+        while True:
+            if(takeTurn(gameBoard, 1)):
+                print("Player 1 Won!\n")
+                break;
 
-    print(board)
+            if(takeTurn(gameBoard, 2)):
+                print("Player 2 Won!\n")
+                break;
 
-    print(board.playerWon(1))
+        resp = getResp("Would you like to play another round? (Y/N)",
+                        "Invalid response.", ['y', 'n'])
+
 
 if __name__ == "__main__":
     main()
