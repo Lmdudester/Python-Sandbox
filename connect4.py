@@ -79,6 +79,8 @@ def getResp(prompt, failStr, answerList):
     while True:
         if(resp in answerList):
             return resp
+        if(resp == 'quit'):
+            exit()
         print(failStr)
         resp = input(prompt).lower()
 
@@ -93,6 +95,7 @@ def takeTurn(board, player):
     return board.playerWon(player)
 
 def main():
+    print("Welcome to Connect 4!\n(Type \"quit\" to quit at any time)")
     resp = 'y'
     while resp == 'y':
         gameBoard = Board()
