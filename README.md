@@ -20,4 +20,7 @@
 * Removes broke players from game without stopping the game.
 
 ### 4. Connect4 - *connect4.py*
-* IN PROGRESS
+* Allows up to 2 players to compete in a game of Connect 4.
+* Searches 2D array board for winners in Linear O(n) time.
+* Includes dynamic method for checking duplicates vertically, horizontally and diagonally around a pivot.
+* FUTURE: Add a computer player.
