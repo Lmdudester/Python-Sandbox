@@ -16,7 +16,7 @@ class Board:
                 if(i == 0):
                     self.cols.remove(str(column))
                 self.board[i][column] = player
-                return player
+                return (i, column)
         return 0
 
     def checkBoard(self, deltaX, deltaY, x, y, player):
@@ -49,18 +49,16 @@ class Board:
         else:
             return False
 
-    def playerWon(self, player):
-        for i in range(0,len(self.board)):
-            if(self.checkBoard(1,1,3,i,player)):
-                return True
-            if(self.checkBoard(1,-1,3,i,player)):
-                return True
-            if(self.checkBoard(1,0,3,i,player)):
-                return True
+    def playerWon(self, x, y, player):
+        if(self.checkBoard(1,1,x,y,player)):
+            return True
+        if(self.checkBoard(1,-1,x,y,player)):
+            return True
+        if(self.checkBoard(1,0,x,y,player)):
+            return True
+        if(self.checkBoard(0,1,x,y,player)):
+            return True
 
-        for i in range(0,len(self.board[3])):
-            if(self.checkBoard(0,1,i,3,player)):
-                return True
         return False
 
     def __str__(self):
@@ -89,10 +87,10 @@ def takeTurn(board, player):
     col = getResp("Where do you want to drop your disk? ",
                 "Column full or invalid number.", board.cols)
 
-    board.dropDisk(player, int(col))
+    position = board.dropDisk(player, int(col))
     print(board)
 
-    return board.playerWon(player)
+    return board.playerWon(position[1], position[0], player)
 
 def main():
     print("Welcome to Connect 4!\n(Type \"quit\" to quit at any time)")
