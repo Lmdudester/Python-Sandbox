@@ -11,7 +11,7 @@ class Board:
         self.cols = ['0', '1', '2', '3', '4', '5', '6']
 
     def dropDisk(self, player, column):
-        for i in reversed(range(0,6)):
+        for i in reversed(range(0,len(self.board))):
             if self.board[i][column] == 0:
                 if(i == 0):
                     self.cols.remove(str(column))
@@ -19,59 +19,49 @@ class Board:
                 return player
         return 0
 
-    def checkX(self, x, y, player):
-        for i in [0,1,2]:
-            x += 1
-            if(self.board[y][x] != player):
-                return False
-        return True
+    def checkBoard(self, deltaX, deltaY, x, y, player):
+        if(self.board[y][x] != player):
+            return False
 
-    def checkY(self, x, y, player):
-        for i in [0,1,2]:
-            y -= 1
-            if(self.board[y][x] != player):
-                return False
-        return True
+        tx = x + deltaX
+        ty = y + deltaY
+        count = 1
+        while(tx > -1 and tx < 7 and ty > -1 and ty < 6):
+            if(self.board[ty][tx] == player):
+                count += 1
+            else:
+                break
+            tx = tx + deltaX
+            ty = ty + deltaY
 
-    def checkXY(self, lr, x, y, player):
-        for i in [0,1,2]:
-            x += lr
-            y -= 1
-            if(self.board[y][x] != player):
-                return False
-        return True
+        tx = x - deltaX
+        ty = y - deltaY
+        while(tx > -1 and tx < 7 and ty > -1 and ty < 6):
+            if(self.board[ty][tx] == player):
+                count += 1
+            else:
+                break
+            tx = tx - deltaX
+            ty = ty - deltaY
+
+        if(count >= 4):
+            return True
+        else:
+            return False
 
     def playerWon(self, player):
-        #For y coordinates in reverse
-        for y in reversed(range(0,len(self.board))):
-            #For x coordiates
-            for x in range(0,len(self.board[y])):
-                #If the player isn't right then skip it
-                if(self.board[y][x] != player):
-                    continue
-                #If we need to check up
-                if(y >= 3):
-                    if(self.checkY(x, y, player)): #Check Up
-                        return True
+        for i in range(0,len(self.board)):
+            if(self.checkBoard(1,1,3,i,player)):
+                return True
+            if(self.checkBoard(1,-1,3,i,player)):
+                return True
+            if(self.checkBoard(1,0,3,i,player)):
+                return True
 
-                    if(x >= 3):
-                        if(self.checkXY(-1, x, y, player)): #Check Up-Left
-                            return True
-
-                    if(x <= 3):
-                        if(self.checkX(x, y, player)): #Check Right
-                            return True
-                        if(self.checkXY(1, x, y, player)): #Check Up-Right
-                            return True
-                #Don't need to check up at all
-                else:
-                    if(x <= 3):
-                        if(self.checkX(x, y, player)): #Check Right
-                            return True
-
-        #If nothing was found
+        for i in range(0,len(self.board[3])):
+            if(self.checkBoard(0,1,i,3,player)):
+                return True
         return False
-
 
     def __str__(self):
         ret =  "  0   1   2   3   4   5   6  \n"
@@ -117,7 +107,7 @@ def main():
                 print("Player 2 Won!\n")
                 break;
 
-        resp = getResp("Would you like to play another round? (Y/N)",
+        resp = getResp("Would you like to play another round? (Y/N) ",
                         "Invalid response.", ['y', 'n'])
 
 
