@@ -23,4 +23,4 @@
 * Allows up to 2 players to compete in a game of Connect 4.
 * Represents board as a 2D array full of numbers representing players.
 * Includes method for checking duplicates vertically, horizontally and diagonally around a pivot.
-* FUTURE: Add a computer player.
+* Allows players to play against a computer player.
